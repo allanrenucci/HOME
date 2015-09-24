@@ -69,24 +69,6 @@ bindkey "\e[B"      history-search-forward    # Down arrow
 bindkey "\e[A"      history-search-backward   # Up arrow
 
 
-# ============ PROMPT ============ #
-
-colors
-setopt prompt_subst     # Enable parameter expansion, command substitution, and arithmetic expansion in the prompt
-
-PROMPT='%{$fg[red]%}%1~%{$reset_color%}$(git_status) %{$fg[white]%}❯%{$reset_color%} '
-RPROMPT='%{$fg_bold[red]%}%T%{$reset_color%}'
-
-# Git prompt
-function git_status {
-    if [ "$HOME" != "$PWD" ]; then
-        git_super_status
-    fi
-}
-source ~/Documents/projects/zsh-git-prompt/zshrc.sh
-export GIT_PROMPT_EXECUTABLE="haskell"
-
-
 # ============ ENVIRONMENT ============ #
 
 # Homebrew provided-program will be used instead of system-provided ones
@@ -96,6 +78,9 @@ export PATH=$homebrew_path:$PATH
 # Set default console Java to 1.8
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
+# My projects
+export PROJECTS="$HOME/Documents/Projects"
+
 # Setup terminal, and turn on colors
 export TERM=xterm-256color
 export CLICOLOR=1
@@ -104,6 +89,20 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # Enable color in grep
 export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;31'
+
+
+# ============ PROMPT ============ #
+
+colors
+setopt prompt_subst     # Enable parameter expansion, command substitution, and arithmetic expansion in the prompt
+
+PROMPT='%{$fg[red]%}%1~%{$reset_color%}$(git_super_status) %{$fg[white]%}❯%{$reset_color%} '
+RPROMPT='%{$fg_bold[red]%}%T%{$reset_color%}'
+
+# Git prompt
+source "$PROJECTS/zsh-git-prompt/zshrc.sh"
+export GIT_PROMPT_EXECUTABLE="haskell"
+
 
 # ============ ALIASES ============ #
 
