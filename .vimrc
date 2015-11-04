@@ -7,3 +7,6 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 " Show lines numbers
 set number
 
+" Add mouse support
+set mouse=a
+
