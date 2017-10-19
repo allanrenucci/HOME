@@ -1,6 +1,7 @@
 [color]
-	ui = true
-
+    ui = true
 [user]
-	name = Allan Renucci
-	email = allan.renucci@gmail.com
+    name = Allan Renucci
+    email = allan.renucci@gmail.com
+[alias]
+    co = checkout --recurse-submodules

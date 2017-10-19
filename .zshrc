@@ -68,18 +68,20 @@ setopt hist_verify           # Show before executing history commands
 bindkey "\e[B"      history-search-forward    # Down arrow
 bindkey "\e[A"      history-search-backward   # Up arrow
 
+# ============ PATH ============ #
+
+# # Add Visual Studio Code (code)
+PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+export PATH
 
 # ============ ENVIRONMENT ============ #
-
-# Homebrew provided-program will be used instead of system-provided ones
-homebrew_path=/usr/local/sbin
-export PATH=$homebrew_path:$PATH
 
 # Set default console Java to 1.8
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
 # My projects
-export PROJECTS="$HOME/Documents/Projects"
+export PROJECTS="$HOME/projects"
 
 # Setup terminal, and turn on colors
 export TERM=xterm-256color
@@ -90,6 +92,9 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;31'
 
+# Drone
+export DRONE_SERVER=http://dotty-ci.epfl.ch
+export DRONE_TOKEN=???
 
 # ============ PROMPT ============ #
 
@@ -109,8 +114,11 @@ export GIT_PROMPT_EXECUTABLE="haskell"
 # Add file type indicator, and put sizes in human readable format
 alias ls='ls -Fh'
 
-# Add command Sublime Text command line tools
-alias subl='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
+# scala2.11
+alias scala2.11='/usr/local/opt/scala@2.11/bin/scala -Dscala.color'
 
-# Scala REPL uses different colors when printing references to vals and types
-alias scala='scala -Dscala.color'
+
+# ============ OTHERS ============= #
+
+# Load rbenv automatically
+# eval "$(rbenv init -)"
