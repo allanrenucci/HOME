@@ -11,12 +11,13 @@ bindkey -e
 precmd() { print -Pn "\e]2; %~/ \a" }
 preexec() { print -Pn "\e]2; %~/ \a" }
 
+
 # ============ SMART COMPLETION ============ #
 
 compinit -d ~/.zsh/zcompdump
 setopt complete_in_word   # Allow completion from within a word/phrase
 setopt completealiases    # Complete aliases
-setopt always_to_end      # When completing from the middle of a word, move the cursor to the end of the word 
+setopt always_to_end      # When completing from the middle of a word, move the cursor to the end of the word
 setopt auto_cd            # If you type foo, and it isn't a command, and it is a directory in your cdpath, go there
 setopt correct            # Spelling correction for commands
 
@@ -68,20 +69,27 @@ setopt hist_verify           # Show before executing history commands
 bindkey "\e[B"      history-search-forward    # Down arrow
 bindkey "\e[A"      history-search-backward   # Up arrow
 
+
 # ============ PATH ============ #
 
-# # Add Visual Studio Code (code)
+# Add Visual Studio Code (code)
 PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+# Load rbenv automatically
+eval "$(rbenv init -)"
 
 export PATH
 
+
 # ============ ENVIRONMENT ============ #
 
-# Set default console Java to 1.8
+# Java
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+# export JAVA_HOME=`/usr/libexec/java_home -v 10`
+
 
 # My projects
-export PROJECTS="$HOME/projects"
+export WORKSPACE="$HOME/workspace"
 
 # Setup terminal, and turn on colors
 export TERM=xterm-256color
@@ -94,31 +102,18 @@ export GREP_COLOR='1;31'
 
 # Drone
 export DRONE_SERVER=http://dotty-ci.epfl.ch
-export DRONE_TOKEN=???
-
-# ============ PROMPT ============ #
+export DRONE_TOKEN=<drone-token>
 
 colors
 setopt prompt_subst     # Enable parameter expansion, command substitution, and arithmetic expansion in the prompt
 
-PROMPT='%{$fg[red]%}%1~%{$reset_color%}$(git_super_status) %{$fg[white]%}❯%{$reset_color%} '
-RPROMPT='%{$fg_bold[red]%}%T%{$reset_color%}'
-
-# Git prompt
-source "$PROJECTS/zsh-git-prompt/zshrc.sh"
-export GIT_PROMPT_EXECUTABLE="haskell"
+# Prompt
+source ~/.zsh/git-prompt.zsh # script from https://github.com/woefe/git-prompt.zsh
+PROMPT='%F{red}%1~%f$(gitprompt) %(?.%F{white}❯%f.%F{red}❯%f) '
+RPROMPT='%B%F{red}%T%f%b'
 
 
 # ============ ALIASES ============ #
 
 # Add file type indicator, and put sizes in human readable format
 alias ls='ls -Fh'
-
-# scala2.11
-alias scala2.11='/usr/local/opt/scala@2.11/bin/scala -Dscala.color'
-
-
-# ============ OTHERS ============= #
-
-# Load rbenv automatically
-# eval "$(rbenv init -)"
