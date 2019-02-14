@@ -7,22 +7,23 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 # Default to standard emacs bindings (vi for Vim)
 bindkey -e
 
-# Open new tabs in the same directory
-precmd() { print -Pn "\e]2; %~/ \a" }
-preexec() { print -Pn "\e]2; %~/ \a" }
+# Open new tabs in same directory
+if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+  function chpwd {
+    printf '\e]7;%s\a' "file://$HOSTNAME${PWD// /%20}"
+  }
+  chpwd
+fi
 
 
 # ============ SMART COMPLETION ============ #
 
-compinit -d ~/.zsh/zcompdump
+compinit
 setopt complete_in_word   # Allow completion from within a word/phrase
 setopt completealiases    # Complete aliases
 setopt always_to_end      # When completing from the middle of a word, move the cursor to the end of the word
 setopt auto_cd            # If you type foo, and it isn't a command, and it is a directory in your cdpath, go there
-setopt correct            # Spelling correction for commands
-
-# Correction for commands
-SPROMPT="Correct $fg[red]%R$reset_color to $fg[green]%r$reset_color? (Yes [y], No [n], Abort [a], Edit [e]): "
+# setopt correct_all      # Autocorrect commands
 
 # Enable completion caching
 zstyle ':completion::complete:*' use-cache on
@@ -40,22 +41,24 @@ zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %
 # Add simple colors to kill
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 
-# list of completers to use
+# List of completers to use
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 
 zstyle ':completion:*' menu select
 
-# match uppercase from lowercasethen match both
+# Match uppercase from lowercasethen match both
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
 
-# formatting and messages
+# Formatting and messages
+zstyle ':completion:*' auto-description 'specify: %d'
+# zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' verbose true
 zstyle ':completion:*' group-name ''
 
 
 # ============ HISTORY ============ #
 
-HISTFILE=~/.zsh/histfile
+HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
 setopt share_history         # Share hist between sessions
@@ -70,50 +73,23 @@ bindkey "\e[B"      history-search-forward    # Down arrow
 bindkey "\e[A"      history-search-backward   # Up arrow
 
 
-# ============ PATH ============ #
+# ============ PROMPT ============ #
 
-# Add Visual Studio Code (code)
-PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-
-# Load rbenv automatically
-eval "$(rbenv init -)"
-
-export PATH
-
-
-# ============ ENVIRONMENT ============ #
-
-# Java
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-# export JAVA_HOME=`/usr/libexec/java_home -v 10`
-
-
-# My projects
-export WORKSPACE="$HOME/workspace"
-
-# Setup terminal, and turn on colors
-export TERM=xterm-256color
-export CLICOLOR=1
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-
-# Enable color in grep
-export GREP_OPTIONS='--color=auto'
-export GREP_COLOR='1;31'
-
-# Drone
-export DRONE_SERVER=http://dotty-ci.epfl.ch
-export DRONE_TOKEN=<drone-token>
+# export TERM="xterm-256color"
 
 colors
 setopt prompt_subst     # Enable parameter expansion, command substitution, and arithmetic expansion in the prompt
 
-# Prompt
-source ~/.zsh/git-prompt.zsh # script from https://github.com/woefe/git-prompt.zsh
+source ~/.zsh/git-prompt.zsh # script adapted from https://github.com/woefe/git-prompt.zsh
+
 PROMPT='%F{red}%1~%f$(gitprompt) %(?.%F{white}❯%f.%F{red}❯%f) '
 RPROMPT='%B%F{red}%T%f%b'
 
 
 # ============ ALIASES ============ #
 
-# Add file type indicator, and put sizes in human readable format
-alias ls='ls -Fh'
+alias grep='grep --color=auto'
+
+# Add file type indicator, enable color and put sizes in human readable format
+alias ls='ls -FGh'
+# export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
